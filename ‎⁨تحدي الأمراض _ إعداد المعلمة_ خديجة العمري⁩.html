@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>تحدي الأمراض | إعداد المعلمة: خديجة العمري</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&family=Lalezar&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg1:#e0f7fa; --bg2:#fff3e0;
+  --ink:#263238; --muted:#607d8b;
+  --pink:#ff4f8b; --purple:#7c4dff; --teal:#00bfa5; --orange:#ff9100; --blue:#2979ff; --yellow:#ffd600;
+  --good:#00c853; --bad:#ff1744;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font-family:'Tajawal',sans-serif;color:var(--ink);min-height:100vh;
+  background:radial-gradient(circle at 10% 10%,#b2ebf2 0,transparent 35%),radial-gradient(circle at 90% 20%,#ffe0b2 0,transparent 35%),radial-gradient(circle at 50% 100%,#e1bee7 0,transparent 40%),linear-gradient(160deg,var(--bg1),var(--bg2));
+  overflow-x:hidden}
+.bubbles span{position:fixed;border-radius:50%;opacity:.18;z-index:0;animation:float 12s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-30px)}}
+.wrap{position:relative;z-index:1;max-width:820px;margin:0 auto;padding:18px 14px 30px}
+header{text-align:center;margin-bottom:12px}
+header h1{font-family:'Lalezar',cursive;font-weight:400;font-size:clamp(30px,7vw,52px);margin:0;line-height:1.2;
+  background:linear-gradient(90deg,var(--pink),var(--purple),var(--blue));-webkit-background-clip:text;background-clip:text;color:transparent}
+header .sub{font-weight:700;color:var(--muted);font-size:15px}
+header .teacher{display:inline-block;margin-top:6px;background:#fff;border:3px dashed var(--pink);color:var(--pink);
+  border-radius:30px;padding:4px 16px;font-weight:900;font-size:16px}
+.card{background:#fff;border-radius:26px;padding:20px;box-shadow:0 10px 30px rgba(124,77,255,.15);border:4px solid #fff}
+.screen{display:none;animation:pop .35s ease}
+.screen.active{display:block}
+@keyframes pop{from{transform:scale(.95);opacity:0}to{transform:scale(1);opacity:1}}
+h2{font-family:'Lalezar';font-weight:400;margin:0 0 12px;font-size:28px;color:var(--purple);text-align:center}
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.mode{border:none;border-radius:22px;padding:22px 10px;color:#fff;font-family:'Tajawal';font-weight:900;font-size:22px;cursor:pointer;
+  box-shadow:0 6px 0 rgba(0,0,0,.18);transition:transform .1s}
+.mode:active{transform:translateY(4px);box-shadow:0 2px 0 rgba(0,0,0,.18)}
+.mode .ic{font-size:46px;display:block;margin-bottom:6px}
+.mode small{display:block;font-weight:700;font-size:14px;opacity:.95}
+.m1{background:linear-gradient(135deg,#ff6fa5,#ff4f8b)}
+.m2{background:linear-gradient(135deg,#8c6bff,#5b3bff)}
+.info{margin-top:16px;background:#f3e5f5;border-radius:18px;padding:12px 16px;font-size:15px;line-height:1.8}
+.info b{color:var(--purple)}
+label{font-weight:900;display:block;margin:10px 0 6px}
+input[type=text]{width:100%;font-family:'Tajawal';font-size:18px;padding:12px 14px;border-radius:14px;border:3px solid #e0e0e0;outline:none}
+input[type=text]:focus{border-color:var(--purple)}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:3px solid #e0e0e0;background:#fff;border-radius:30px;padding:8px 16px;font-family:'Tajawal';font-weight:900;font-size:16px;cursor:pointer}
+.chip.on{background:var(--purple);border-color:var(--purple);color:#fff}
+.groupsIn{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.gIn{display:flex;align-items:center;gap:6px;border-radius:16px;padding:6px 8px;border:3px solid}
+.gIn span{font-size:24px}
+.gIn input{border:none!important;padding:8px 4px!important;font-size:16px!important}
+.btn{display:block;width:100%;margin-top:18px;border:none;border-radius:18px;padding:16px;font-family:'Tajawal';font-weight:900;font-size:22px;color:#fff;cursor:pointer;
+  background:linear-gradient(135deg,var(--teal),#00897b);box-shadow:0 6px 0 #00695c}
+.btn:active{transform:translateY(4px);box-shadow:0 2px 0 #00695c}
+.btn.sec{background:#eceff1;color:var(--ink);box-shadow:0 6px 0 #b0bec5}
+.back{background:none;border:none;font-family:'Tajawal';font-weight:900;color:var(--muted);font-size:16px;cursor:pointer;padding:0;margin-bottom:6px}
+/* game */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.pill{background:#fff;border-radius:30px;padding:6px 14px;font-weight:900;box-shadow:0 4px 12px rgba(0,0,0,.08);font-size:16px}
+.progress{height:12px;background:#ffffffaa;border-radius:10px;overflow:hidden;margin-bottom:12px}
+.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--yellow),var(--orange),var(--pink));transition:width .4s}
+.scores{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:12px}
+.sc{flex:1;min-width:120px;background:#fff;border-radius:18px;padding:8px;text-align:center;border:4px solid transparent;transition:.2s;opacity:.65}
+.sc.turn{opacity:1;transform:scale(1.06);box-shadow:0 8px 20px rgba(0,0,0,.12)}
+.sc .nm{font-weight:900;font-size:15px}
+.sc .pt{font-family:'Lalezar';font-size:28px;line-height:1}
+.turnBanner{text-align:center;font-weight:900;font-size:20px;margin-bottom:10px;padding:8px;border-radius:16px;color:#fff}
+.qcard{position:relative}
+.qtype{display:inline-block;border-radius:20px;padding:4px 14px;font-weight:900;font-size:14px;color:#fff;margin-bottom:8px}
+.gold{position:absolute;top:-14px;left:16px;background:linear-gradient(135deg,#ffd600,#ffab00);color:#5d4037;font-weight:900;border-radius:20px;padding:6px 14px;box-shadow:0 4px 0 #ff8f00;animation:wig 1s ease-in-out infinite}
+@keyframes wig{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}
+.qtext{font-size:clamp(20px,4.6vw,26px);font-weight:900;line-height:1.6;margin:6px 0 14px}
+.qtext .big{display:block;text-align:center;font-family:'Lalezar';font-weight:400;font-size:clamp(34px,9vw,52px);color:var(--purple);margin-top:6px}
+.timer{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;font-family:'Lalezar';font-size:24px;color:#fff;background:var(--blue);flex:none}
+.timer.warn{background:var(--bad);animation:beat .5s infinite}
+@keyframes beat{50%{transform:scale(1.12)}}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opts.one{grid-template-columns:1fr}
+.opt{border:none;border-radius:18px;padding:14px 10px;font-family:'Tajawal';font-weight:900;font-size:clamp(16px,3.8vw,20px);color:#fff;cursor:pointer;box-shadow:0 5px 0 rgba(0,0,0,.2);line-height:1.5;transition:transform .1s,opacity .2s;min-height:64px}
+.opt:active{transform:translateY(3px)}
+.opt.dim{opacity:.35}
+.opt.right{outline:5px solid var(--good);outline-offset:2px;opacity:1}
+.opt.wrong{outline:5px solid var(--bad);outline-offset:2px;animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.sortBtns .opt{font-size:clamp(20px,5vw,26px);min-height:110px}
+.sortBtns .opt .e{display:block;font-size:40px}
+.fb{display:none;margin-top:14px;border-radius:18px;padding:12px 16px;font-size:17px;line-height:1.8;font-weight:700}
+.fb.ok{display:block;background:#e8f5e9;border:3px solid var(--good)}
+.fb.no{display:block;background:#ffebee;border:3px solid var(--bad)}
+.fb .t{font-weight:900;font-size:20px}
+.next{display:none}
+/* end */
+.trophy{font-size:80px;text-align:center;animation:wig 1.2s infinite}
+.final{text-align:center;font-size:20px;font-weight:900;line-height:1.8}
+.stars{font-size:42px;text-align:center;letter-spacing:6px}
+.rank{display:flex;align-items:center;gap:10px;background:#fafafa;border-radius:16px;padding:10px 14px;margin:8px 0;font-weight:900;font-size:18px;border-right:8px solid}
+.rank .p{margin-right:auto;font-family:'Lalezar';font-size:26px}
+footer{text-align:center;margin-top:18px;font-weight:900;color:var(--purple);font-size:16px}
+footer span{background:#fff;padding:6px 18px;border-radius:30px;box-shadow:0 4px 12px rgba(0,0,0,.08)}
+canvas#cf{position:fixed;inset:0;pointer-events:none;z-index:50}
+.toggle{display:flex;align-items:center;gap:8px;font-weight:900;margin-top:10px}
+</style>
+</head>
+<body>
+<div class="bubbles">
+  <span style="width:120px;height:120px;background:#ff4f8b;top:8%;right:4%"></span>
+  <span style="width:80px;height:80px;background:#7c4dff;top:60%;left:3%;animation-delay:2s"></span>
+  <span style="width:150px;height:150px;background:#00bfa5;bottom:4%;right:10%;animation-delay:4s"></span>
+  <span style="width:60px;height:60px;background:#ff9100;top:30%;left:12%;animation-delay:1s"></span>
+</div>
+<canvas id="cf"></canvas>
+
+<div class="wrap">
+  <header>
+    <h1>🦠 تحدي الأمراض 🩺</h1>
+    <div class="sub">لعبة تفاعلية — العلوم | الصف الرابع | درس: ما المرض؟</div>
+    <div class="teacher">✨ إعداد المعلمة: خديجة العمري ✨</div>
+  </header>
+
+  <!-- start -->
+  <section class="screen active" id="sStart">
+    <div class="card">
+      <h2>اختاري طريقة اللعب</h2>
+      <div class="modes">
+        <button class="mode m1" onclick="go('sSolo')"><span class="ic">🙋‍♀️</span>فردي<small>طالبة واحدة تجمع النجوم</small></button>
+        <button class="mode m2" onclick="go('sGroups')"><span class="ic">👭👭</span>مجموعات<small>تنافس بالدور بين المجموعات</small></button>
+      </div>
+      <div class="info">
+        <b>🎯 أنواع التحديات:</b> صنّفي المرض (معدٍ / غير معدٍ) • اختاري الإجابة • صح أم خطأ<br>
+        <b>⭐ النقاط:</b> الإجابة الصحيحة = 10 نقاط • 🌟 السؤال الذهبي = 20 نقطة<br>
+        <b>⏱️ الوقت:</b> لكل سؤال 25 ثانية
+      </div>
+    </div>
+  </section>
+
+  <!-- solo setup -->
+  <section class="screen" id="sSolo">
+    <div class="card">
+      <button class="back" onclick="go('sStart')">→ رجوع</button>
+      <h2>🙋‍♀️ اللعب الفردي</h2>
+      <label>اسم الطالبة</label>
+      <input type="text" id="soloName" placeholder="اكتبي اسمك هنا" maxlength="25">
+      <label>عدد الأسئلة</label>
+      <div class="row" id="soloCount"></div>
+      <div class="toggle"><input type="checkbox" id="soloTimer" checked> <span>تشغيل المؤقت ⏱️</span></div>
+      <button class="btn" onclick="startSolo()">ابدئي التحدي 🚀</button>
+    </div>
+  </section>
+
+  <!-- groups setup -->
+  <section class="screen" id="sGroups">
+    <div class="card">
+      <button class="back" onclick="go('sStart')">→ رجوع</button>
+      <h2>👭 لعب المجموعات</h2>
+      <label>عدد المجموعات</label>
+      <div class="row" id="gNum"></div>
+      <label>أسماء المجموعات (يمكن تعديلها)</label>
+      <div class="groupsIn" id="gInputs"></div>
+      <label>عدد الأسئلة لكل مجموعة</label>
+      <div class="row" id="gCount"></div>
+      <div class="toggle"><input type="checkbox" id="gTimer" checked> <span>تشغيل المؤقت ⏱️</span></div>
+      <div class="toggle"><input type="checkbox" id="gSteal" checked> <span>فرصة السرقة: إذا أخطأت المجموعة تجيب المجموعة التالية (5 نقاط)</span></div>
+      <button class="btn" onclick="startGroups()">ابدأن المنافسة 🏁</button>
+    </div>
+  </section>
+
+  <!-- game -->
+  <section class="screen" id="sGame">
+    <div class="topbar">
+      <div class="pill" id="qNum">السؤال 1</div>
+      <div class="pill" id="soloScore" style="display:none">⭐ 0</div>
+      <button class="pill" style="border:none;cursor:pointer;font-family:Tajawal" onclick="toggleSound()" id="sndBtn">🔊</button>
+      <button class="pill" style="border:none;cursor:pointer;font-family:Tajawal" onclick="quit()">🏠 خروج</button>
+    </div>
+    <div class="progress"><i id="prog"></i></div>
+    <div class="scores" id="scores"></div>
+    <div class="turnBanner" id="turn" style="display:none"></div>
+    <div class="card qcard">
+      <div class="gold" id="gold" style="display:none">🌟 سؤال ذهبي ×2</div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+        <div><span class="qtype" id="qType"></span></div>
+        <div class="timer" id="timer">25</div>
+      </div>
+      <div class="qtext" id="qText"></div>
+      <div class="opts" id="opts"></div>
+      <div class="fb" id="fb"></div>
+      <button class="btn next" id="nextBtn" onclick="nextQ()">التالي ⬅️</button>
+    </div>
+  </section>
+
+  <!-- end -->
+  <section class="screen" id="sEnd">
+    <div class="card" id="endCard"></div>
+  </section>
+
+  <footer><span>🌸 إعداد المعلمة: خديجة العمري 🌸</span></footer>
+</div>
+
+<script>
+/* ===== بنك الأسئلة (من درس: ما المرض؟) ===== */
+const NC='غير معدٍ', C='معدٍ';
+const BANK=[
+ // تصنيف
+ {t:'sort',q:'السكري',a:NC,ex:'السكري مرض مزمن غير معدٍ، ينتج عن خلل في مستويات الأنسولين الذي يفرزه البنكرياس.'},
+ {t:'sort',q:'السمنة',a:NC,ex:'السمنة تراكم مفرط للدهون في الجسم، ولا تنتقل من شخص لآخر.'},
+ {t:'sort',q:'فقر الدم',a:NC,ex:'فقر الدم غير معدٍ، من أسبابه نقص الحديد أو العوامل الوراثية.'},
+ {t:'sort',q:'الحساسية',a:NC,ex:'الحساسية تفاعل شديد لجهاز المناعة ضد المواد الغريبة، ولا تنتقل بالعدوى.'},
+ {t:'sort',q:'أمراض القلب',a:NC,ex:'أمراض القلب من الأمراض غير المعدية.'},
+ {t:'sort',q:'السرطان',a:NC,ex:'السرطان من الأمراض غير المعدية.'},
+ {t:'sort',q:'الضغط',a:NC,ex:'الضغط من الأمراض غير المعدية.'},
+ {t:'sort',q:'الزكام (نزلة البرد)',a:C,ex:'الزكام يسببه فيروس، وينتقل عن طريق الهواء والاتصال بالمصاب.'},
+ {t:'sort',q:'الإنفلونزا',a:C,ex:'الإنفلونزا مرض معدٍ يسببه فيروس وينتقل عبر الهواء.'},
+ // اختيار من متعدد
+ {t:'mcq',q:'حالة غير طبيعية تؤثر على جسم المخلوق الحي وترتبط بأعراض وعلامات، هي:',o:['المرض','الغذاء','النمو','التنفس'],a:'المرض',ex:'المرض حالة غير طبيعية تؤثر على جسم المخلوق الحي.'},
+ {t:'mcq',q:'الأمراض التي لا تنتقل من الشخص المصاب إلى الشخص السليم تسمى:',o:['الأمراض غير المعدية','الأمراض المعدية','الفيروسات','البكتيريا'],a:'الأمراض غير المعدية',ex:'مثل السمنة والسكري وفقر الدم.'},
+ {t:'mcq',q:'الأمراض الناتجة عن الفيروسات والبكتيريا والفطريات الضارة تسمى:',o:['الأمراض المعدية','الأمراض غير المعدية','الأمراض الوراثية','الحساسية'],a:'الأمراض المعدية',ex:'وتنتقل من المصاب أو من البيئة إلى السليم.'},
+ {t:'mcq',q:'ينتج مرض السكري عن خلل في مستويات:',o:['الأنسولين','الحديد','الماء','الأكسجين'],a:'الأنسولين',ex:'الأنسولين هرمون يفرزه البنكرياس.'},
+ {t:'mcq',q:'العضو الذي يفرز الأنسولين هو:',o:['البنكرياس','القلب','الرئتان','الجلد'],a:'البنكرياس',ex:'البنكرياس يفرز الأنسولين، والخلل فيه يسبب السكري.'},
+ {t:'mcq',q:'من أسباب فقر الدم:',o:['نقص الحديد','كثرة شرب الماء','النوم المبكر','ممارسة الرياضة'],a:'نقص الحديد',ex:'من أسباب فقر الدم نقص الحديد أو العوامل الوراثية.'},
+ {t:'mcq',q:'خلايا الدم الحمراء تنقل إلى أنسجة الجسم:',o:['الأكسجين والغذاء','الدهون فقط','الفيروسات','الأنسولين'],a:'الأكسجين والغذاء',ex:'وفي فقر الدم يفتقر الدم إلى ما يكفي منها.'},
+ {t:'mcq',q:'تفاعل جهاز المناعة بشدة ضد المواد الغريبة يسمى:',o:['الحساسية','السمنة','السكري','فقر الدم'],a:'الحساسية',ex:'وقد تكون من بعض الأطعمة أو لدغ الحشرات.'},
+ {t:'mcq',q:'التراكم المفرط أو غير الطبيعي للدهون في الجسم يسمى:',o:['السمنة','الحساسية','فقر الدم','الزكام'],a:'السمنة',ex:'السمنة مرض غير معدٍ.'},
+ {t:'mcq',q:'من أسباب السمنة:',o:['الإفراط في الأكل وقلة النشاط البدني','شرب الماء','غسل اليدين','النوم الكافي'],a:'الإفراط في الأكل وقلة النشاط البدني',ex:'ومن أسبابها أيضًا العوامل الوراثية وبعض الأدوية.'},
+ {t:'mcq',q:'الجهاز الذي ساعد العلماء على اكتشاف المخلوقات الدقيقة المسببة للأمراض:',o:['المجهر','الميزان','المغناطيس','الترمومتر'],a:'المجهر',ex:'عندما اختُرع المجهر اكتشف العلماء الفيروسات والبكتيريا والفطريات.'},
+ {t:'mcq',q:'أيٌّ مما يلي ليس من طرق انتقال الأمراض المعدية؟',o:['العوامل الوراثية','الهواء','الماء والطعام','الأدوات الملوثة'],a:'العوامل الوراثية',ex:'الوراثة سبب لبعض الأمراض غير المعدية، أما المعدية فتنتقل بالهواء والماء والطعام والأدوات الملوثة والاتصال المباشر.'},
+ {t:'mcq',q:'من أعراض الحساسية:',o:['احمرار وتهيج في الجلد','زيادة الطول','قوة العضلات','تحسن النظر'],a:'احمرار وتهيج في الجلد',ex:'من أعراض الحساسية حدوث احمرار وتهيج في الجلد.'},
+ {t:'mcq',q:'المسافة التي تقلل خطورة انتقال الفيروس بين شخصين:',o:['2 متر','10 سم','نصف متر','لا توجد مسافة'],a:'2 متر',ex:'كلما ابتعدنا مسافة 2 متر قلّت خطورة انتقال الفيروس.'},
+ {t:'mcq',q:'أتوقع: لماذا يُصاب بعض الأشخاص بالحساسية عند تربية الحيوانات الأليفة؟',o:['لأن جهاز المناعة يتفاعل بشدة مع مواد غريبة من الحيوان كالشعر','لأنهم يأكلون كثيرًا','لنقص الحديد','لأن الحيوان يفرز الأنسولين'],a:'لأن جهاز المناعة يتفاعل بشدة مع مواد غريبة من الحيوان كالشعر',ex:'الحساسية تفاعل جهاز المناعة بشدة ضد المواد الغريبة.'},
+ {t:'mcq',q:'التفكير الناقد: لماذا يُصنَّف السكري من الأمراض غير المعدية؟',o:['لأنه لا ينتقل من المصاب إلى السليم','لأنه تسببه البكتيريا','لأنه ينتقل بالهواء','لأنه ينتقل باللمس'],a:'لأنه لا ينتقل من المصاب إلى السليم',ex:'السكري ينتج عن خلل في الأنسولين وقد يكون وراثيًا، ولا ينتقل بالعدوى.'},
+ // صح أم خطأ
+ {t:'tf',q:'كل الأمراض معدية.',a:'خطأ',ex:'ليست كل الأمراض معدية؛ فهناك أمراض غير معدية مثل السكري والسمنة.'},
+ {t:'tf',q:'السمنة مرض معدٍ ينتقل باللمس.',a:'خطأ',ex:'السمنة مرض غير معدٍ.'},
+ {t:'tf',q:'قد تنتج الحساسية عن لدغ الحشرات أو بعض الأطعمة.',a:'صح',ex:'نعم، وقد تكون أيضًا نتيجة عوامل وراثية.'},
+ {t:'tf',q:'تنتقل الأمراض المعدية بالاتصال المباشر بالشخص المصاب.',a:'صح',ex:'وتنتقل أيضًا عبر الماء والهواء والطعام والأدوات الملوثة.'},
+ {t:'tf',q:'السكري مرض مزمن.',a:'صح',ex:'السكري مرض مزمن غير معدٍ.'},
+ {t:'tf',q:'الفيروسات والبكتيريا والفطريات مخلوقات حية دقيقة قد تسبب الأمراض.',a:'صح',ex:'اكتشفها العلماء بعد اختراع المجهر.'},
+ {t:'tf',q:'قد تنتج بعض الأمراض عن عوامل وراثية.',a:'صح',ex:'مثل بعض حالات السكري وفقر الدم والحساسية.'},
+ {t:'tf',q:'يمكن أن ينتقل المرض المعدي عن طريق المخلوقات الحية الحاملة للمرض.',a:'صح',ex:'نعم، هي إحدى طرق انتقال الأمراض المعدية.'},
+];
+
+const GROUP_DEF=[
+ {n:'الفراشات',e:'🦋',c:'#ff4f8b'},
+ {n:'النجوم',e:'⭐',c:'#ff9100'},
+ {n:'الإبداع',e:'💡',c:'#00bfa5'},
+ {n:'الأميرات',e:'👑',c:'#7c4dff'},
+];
+const OPT_COLORS=['#ff4f8b','#2979ff','#00bfa5','#ff9100'];
+const TYPE_INFO={sort:['🧺 صنّفي المرض','#00bfa5'],mcq:['🔤 اختاري الإجابة','#2979ff'],tf:['✔️ صح أم خطأ','#ff9100']};
+const TIME=25;
+
+let S={}; // حالة اللعبة
+let soloN=10, gN=4, gQ=4, sound=true;
+
+function $(id){return document.getElementById(id)}
+function go(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');window.scrollTo(0,0)}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+
+function chips(el,vals,cur,fn,fmt){
+  el.innerHTML='';
+  vals.forEach(v=>{const b=document.createElement('button');b.className='chip'+(v===cur?' on':'');b.textContent=fmt?fmt(v):v;
+    b.onclick=()=>{fn(v);chips(el,vals,v,fn,fmt)};el.appendChild(b)});
+}
+function renderGroupInputs(){
+  const box=$('gInputs'),old=[...box.querySelectorAll('input')].map(i=>i.value);
+  box.innerHTML='';
+  for(let i=0;i<gN;i++){const g=GROUP_DEF[i];
+    const d=document.createElement('div');d.className='gIn';d.style.borderColor=g.c;
+    d.innerHTML=`<span>${g.e}</span><input type="text" maxlength="18" value="${old[i]||g.n}">`;box.appendChild(d)}
+}
+chips($('soloCount'),[8,12,16,20],soloN,v=>soloN=v,v=>v+' سؤال');
+chips($('gNum'),[2,3,4],gN,v=>{gN=v;renderGroupInputs()},v=>v+' مجموعات');
+chips($('gCount'),[3,4,5,6],gQ,v=>gQ=v,v=>v+' أسئلة');
+renderGroupInputs();
+
+/* ===== صوت ===== */
+let actx;
+function tone(freqs,dur=.12,type='sine'){
+  if(!sound)return;
+  try{actx=actx||new (window.AudioContext||window.webkitAudioContext)();
+    freqs.forEach((f,i)=>{const o=actx.createOscillator(),g=actx.createGain();o.type=type;o.frequency.value=f;
+      const t=actx.currentTime+i*dur;g.gain.setValueAtTime(.18,t);g.gain.exponentialRampToValueAtTime(.001,t+dur*1.6);
+      o.connect(g).connect(actx.destination);o.start(t);o.stop(t+dur*1.7)})}catch(e){}
+}
+const sGood=()=>tone([523,659,784,1047],.1,'triangle');
+const sBad=()=>tone([300,200],.18,'sawtooth');
+const sTick=()=>tone([880],.05,'square');
+function toggleSound(){sound=!sound;$('sndBtn').textContent=sound?'🔊':'🔇'}
+
+/* ===== بناء الأسئلة ===== */
+function buildQs(n){
+  // مزيج متوازن من الأنواع
+  const by={sort:shuffle(BANK.filter(x=>x.t==='sort')),mcq:shuffle(BANK.filter(x=>x.t==='mcq')),tf:shuffle(BANK.filter(x=>x.t==='tf'))};
+  const order=['sort','mcq','tf','mcq'];let out=[],i=0;
+  while(out.length<n){const k=order[i%order.length];i++;
+    if(by[k].length)out.push(by[k].pop());
+    else if(!by.sort.length&&!by.mcq.length&&!by.tf.length){by.sort=shuffle(BANK.filter(x=>x.t==='sort'));by.mcq=shuffle(BANK.filter(x=>x.t==='mcq'));by.tf=shuffle(BANK.filter(x=>x.t==='tf'))}
+  }
+  out=shuffle(out).map(q=>({...q,gold:false}));
+  // أسئلة ذهبية
+  const golds=Math.max(1,Math.round(n/5));
+  shuffle([...Array(n).keys()]).slice(0,golds).forEach(k=>out[k].gold=true);
+  return out;
+}
+
+function startSolo(){
+  const nm=$('soloName').value.trim()||'البطلة';
+  S={mode:'solo',players:[{n:nm,e:'🙋‍♀️',c:'#ff4f8b',p:0,right:0}],qs:buildQs(soloN),i:0,turn:0,timerOn:$('soloTimer').checked,steal:false};
+  $('soloScore').style.display='';go('sGame');showQ();
+}
+function startGroups(){
+  const names=[...$('gInputs').querySelectorAll('input')].map((x,i)=>x.value.trim()||GROUP_DEF[i].n);
+  const players=names.map((n,i)=>({n,e:GROUP_DEF[i].e,c:GROUP_DEF[i].c,p:0,right:0}));
+  S={mode:'groups',players,qs:buildQs(gN*gQ),i:0,turn:0,timerOn:$('gTimer').checked,steal:$('gSteal').checked};
+  $('soloScore').style.display='none';go('sGame');showQ();
+}
+
+let tInt,tLeft,answered,stealing;
+function renderScores(){
+  const box=$('scores');box.innerHTML='';
+  if(S.mode==='solo'){box.style.display='none';$('soloScore').textContent='⭐ '+S.players[0].p;return}
+  box.style.display='';
+  const active=stealing!=null?stealing:S.turn;
+  S.players.forEach((p,i)=>{const d=document.createElement('div');d.className='sc'+(i===active?' turn':'');d.style.borderColor=p.c;
+    d.innerHTML=`<div class="nm">${p.e} ${p.n}</div><div class="pt" style="color:${p.c}">${p.p}</div>`;box.appendChild(d)});
+}
+function setBanner(){
+  const b=$('turn');
+  if(S.mode!=='groups'){b.style.display='none';return}
+  const idx=stealing!=null?stealing:S.turn,p=S.players[idx];
+  b.style.display='';b.style.background=p.c;
+  b.textContent=stealing!=null?`🔥 فرصة سرقة لمجموعة ${p.n} ${p.e}`:`الدور على مجموعة ${p.n} ${p.e}`;
+}
+function showQ(){
+  const q=S.qs[S.i];answered=false;stealing=null;
+  $('qNum').textContent=`السؤال ${S.i+1} من ${S.qs.length}`;
+  $('prog').style.width=(S.i/S.qs.length*100)+'%';
+  $('gold').style.display=q.gold?'':'none';
+  const ti=TYPE_INFO[q.t];$('qType').textContent=ti[0];$('qType').style.background=ti[1];
+  $('qText').innerHTML=q.t==='sort'?`هل هذا المرض معدٍ أم غير معدٍ؟<span class="big">${q.q}</span>`:q.q;
+  const box=$('opts');box.innerHTML='';box.className='opts';
+  let opts;
+  if(q.t==='sort'){opts=[C,NC];box.classList.add('sortBtns')}
+  else if(q.t==='tf'){opts=['صح','خطأ'];box.classList.add('sortBtns')}
+  else{opts=shuffle(q.o);if(opts.some(o=>o.length>28))box.classList.add('one')}
+  opts.forEach((o,k)=>{const b=document.createElement('button');b.className='opt';b.dataset.v=o;
+    let col=OPT_COLORS[k%4],icon='';
+    if(q.t==='sort'){col=o===C?'#ff1744':'#2979ff';icon=o===C?'🦠':'🛡️'}
+    if(q.t==='tf'){col=o==='صح'?'#00c853':'#ff1744';icon=o==='صح'?'✅':'❌'}
+    b.style.background=col;b.innerHTML=(icon?`<span class="e">${icon}</span>`:'')+o;
+    b.onclick=()=>answer(o,b);box.appendChild(b)});
+  $('fb').className='fb';$('fb').innerHTML='';$('nextBtn').style.display='none';
+  renderScores();setBanner();startTimer();
+}
+function startTimer(){
+  clearInterval(tInt);const el=$('timer');
+  if(!S.timerOn){el.style.display='none';return}
+  el.style.display='';tLeft=TIME;el.textContent=tLeft;el.classList.remove('warn');
+  tInt=setInterval(()=>{tLeft--;el.textContent=tLeft;
+    if(tLeft<=5){el.classList.add('warn');if(tLeft>0)sTick()}
+    if(tLeft<=0){clearInterval(tInt);answer(null,null)}},1000);
+}
+function answer(v,btn){
+  if(answered)return;
+  const q=S.qs[S.i],ok=v===q.a;
+  const idx=stealing!=null?stealing:S.turn,p=S.players[idx];
+  clearInterval(tInt);
+  if(ok){
+    answered=true;
+    const pts=stealing!=null?5:(q.gold?20:10);
+    p.p+=pts;p.right++;sGood();confetti();
+    markOpts(q.a,btn);
+    const praise=['أحسنتِ! 🎉','رائع جدًا! 🌟','إجابة ممتازة! 👏','عبقرية! 💡','مبدعة! 🦋'][Math.floor(Math.random()*5)];
+    $('fb').className='fb ok';$('fb').innerHTML=`<div class="t">${praise} +${pts} ${S.mode==='groups'?'لمجموعة '+p.n:''}</div>${q.ex}`;
+    finishQ();
+  }else{
+    sBad();if(btn)btn.classList.add('wrong');
+    // فرصة سرقة
+    if(S.mode==='groups'&&S.steal&&stealing==null&&S.players.length>1){
+      stealing=(S.turn+1)%S.players.length;
+      if(btn){btn.disabled=true;btn.classList.add('dim')}
+      $('fb').className='fb no';$('fb').innerHTML=`<div class="t">${v==null?'⏰ انتهى الوقت!':'إجابة غير صحيحة 😅'}</div>الفرصة الآن لمجموعة ${S.players[stealing].n} ${S.players[stealing].e}`;
+      renderScores();setBanner();startTimer();
+      return;
+    }
+    answered=true;markOpts(q.a,btn);
+    $('fb').className='fb no';$('fb').innerHTML=`<div class="t">${v==null?'⏰ انتهى الوقت!':'محاولة جيدة 💪'} الإجابة الصحيحة: ${q.a}</div>${q.ex}`;
+    finishQ();
+  }
+}
+function markOpts(a){
+  document.querySelectorAll('#opts .opt').forEach(b=>{b.disabled=true;
+    if(b.dataset.v===a)b.classList.add('right');else if(!b.classList.contains('wrong'))b.classList.add('dim')});
+}
+function finishQ(){
+  renderScores();
+  $('nextBtn').style.display='block';
+  $('nextBtn').textContent=S.i===S.qs.length-1?'النتيجة النهائية 🏆':'التالي ⬅️';
+}
+function nextQ(){
+  S.i++;
+  if(S.mode==='groups')S.turn=(S.turn+1)%S.players.length;
+  if(S.i>=S.qs.length)return end();
+  showQ();
+}
+function quit(){clearInterval(tInt);go('sStart')}
+
+function end(){
+  clearInterval(tInt);$('prog').style.width='100%';
+  const c=$('endCard');
+  if(S.mode==='solo'){
+    const p=S.players[0],tot=S.qs.length,pct=p.right/tot;
+    const st=pct>=.9?3:pct>=.6?2:pct>=.3?1:0;
+    const msg=st===3?'أنتِ بطلة العلوم! 🏅':st===2?'أداء رائع، استمري! 🌟':st===1?'بداية جيدة، راجعي الدرس وحاولي مرة أخرى 💪':'لا بأس، راجعي الدرس وجربي من جديد 📖';
+    c.innerHTML=`<div class="trophy">${st>=2?'🏆':'🎖️'}</div>
+      <h2>أحسنتِ يا ${p.n}!</h2>
+      <div class="stars">${'⭐'.repeat(st)}${'☆'.repeat(3-st)}</div>
+      <div class="final">الإجابات الصحيحة: ${p.right} من ${tot}<br>مجموع النقاط: <span style="color:var(--pink)">${p.p}</span><br>${msg}</div>
+      <button class="btn" onclick="startSolo()">العبي مرة أخرى 🔁</button>
+      <button class="btn sec" onclick="go('sStart')">الصفحة الرئيسية 🏠</button>`;
+  }else{
+    const r=S.players.slice().sort((a,b)=>b.p-a.p),top=r[0].p,winners=r.filter(x=>x.p===top);
+    const medals=['🥇','🥈','🥉','🎗️'];
+    c.innerHTML=`<div class="trophy">🏆</div>
+      <h2>${winners.length>1?'تعادل! الفائزات: '+winners.map(w=>w.n).join(' و '):'الفائزة: مجموعة '+r[0].n+' '+r[0].e}</h2>
+      ${r.map((p,i)=>`<div class="rank" style="border-color:${p.c}">${medals[i]} ${p.e} ${p.n}<span style="font-size:14px;color:var(--muted)">(${p.right} صحيحة)</span><span class="p" style="color:${p.c}">${p.p}</span></div>`).join('')}
+      <div class="final" style="margin-top:8px">شكرًا لكل المجموعات على المشاركة الرائعة 💐</div>
+      <button class="btn" onclick="startGroups()">جولة جديدة 🔁</button>
+      <button class="btn sec" onclick="go('sStart')">الصفحة الرئيسية 🏠</button>`;
+  }
+  go('sEnd');confetti(220);sGood();
+}
+
+/* ===== قصاصات الاحتفال ===== */
+const cv=$('cf'),cx=cv.getContext('2d');let parts=[],raf;
+function fit(){cv.width=innerWidth;cv.height=innerHeight}fit();addEventListener('resize',fit);
+function confetti(n=90){
+  const cols=['#ff4f8b','#7c4dff','#00bfa5','#ff9100','#ffd600','#2979ff'];
+  for(let i=0;i<n;i++)parts.push({x:innerWidth/2,y:innerHeight/3,vx:(Math.random()-.5)*14,vy:Math.random()*-12-2,s:Math.random()*8+4,c:cols[i%6],r:Math.random()*6,life:110});
+  if(!raf)loop();
+}
+function loop(){
+  cx.clearRect(0,0,cv.width,cv.height);
+  parts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.35;p.vx*=.99;p.r+=.2;p.life--;
+    cx.save();cx.translate(p.x,p.y);cx.rotate(p.r);cx.fillStyle=p.c;cx.fillRect(-p.s/2,-p.s/4,p.s,p.s/2);cx.restore()});
+  parts=parts.filter(p=>p.life>0&&p.y<innerHeight+20);
+  if(parts.length)raf=requestAnimationFrame(loop);else{raf=null;cx.clearRect(0,0,cv.width,cv.height)}
+}
+</script>
+</body>
+</html>
